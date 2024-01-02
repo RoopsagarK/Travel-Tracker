@@ -6,11 +6,11 @@ const app = express();
 const port = 3000;
 
 const db = new pg.Client({
-  user: "",
-  host: "",
-  database: "",
-  password: "",
-  port: 0,
+  user: "postgres",
+  host: "localhost",
+  database: "world",
+  password: "roop9854",
+  port: 5432,
 });
 db.connect();
 
@@ -55,11 +55,16 @@ app.post("/add", async (req, res) => {
 
   try {
     const result = await db.query(
-      "SELECT country_code FROM countries WHERE LOWER(country_name) LIKE '%' || $1 || '%';",
+      "SELECT * FROM countries WHERE LOWER(country_name) LIKE '%' || $1 || '%';",
       [input.toLowerCase()]
     );
-
-    const data = result.rows[0];
+    let findex = 0;
+    result.rows.forEach((row, index) => {
+      if (row.country_name.toLowerCase() == input) {
+        findex = index;
+      }
+    });
+    const data = result.rows[findex];
     const countryCode = data.country_code;
     try {
       await db.query(
