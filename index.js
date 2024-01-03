@@ -6,11 +6,11 @@ const app = express();
 const port = 3000;
 
 const db = new pg.Client({
-  user: "postgres",
-  host: "localhost",
-  database: "world",
-  password: "roop9854",
-  port: 5432,
+  user: "###",
+  host: "###",
+  database: "###",
+  password: "###",
+  port: 0,
 });
 db.connect();
 
@@ -42,7 +42,6 @@ async function checkVisisted(user) {
 app.get("/", async (req, res) => {
   const response = await checkVisisted(currentUserId);
   const users = await getUsers();
-  console.log(response);
   res.render("index.ejs", {
     countries: response.countries,
     total: response.countries.length,
@@ -80,7 +79,6 @@ app.post("/add", async (req, res) => {
   }
 });
 app.post("/user", async (req, res) => {
-  console.log(req.body);
   if (req.body.add) {
     res.render("new.ejs");
   } else {
