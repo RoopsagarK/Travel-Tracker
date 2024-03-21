@@ -3,12 +3,11 @@
   box-sizing: border-box;
 }
 body {
-  position: absolute;
-  top: 35%;
-  left: 35%;
-  transform: translate(-35%, -35%);
   font-family: "Roboto";
   color: #ffffff;
+}
+.users {
+  margin-top: 30px;
 }
 input[type="radio"] {
   display: none;
@@ -45,6 +44,14 @@ input[type="radio"]:checked + label .purple {
 }
 input[type="radio"]:checked + label .pink {
   border: 2px solid #851554;
+}
+.name-list {
+  display: flex;
+  padding: 10px;
+  margin: 5px;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.2);
 }
 label {
   display: inline-block;

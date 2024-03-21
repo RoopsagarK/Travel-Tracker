@@ -7,10 +7,10 @@ const app = express();
 const port = process.env.PORT || 3000;
 const { Pool } = pg;
 // const db = new pg.Client({
-//   user: "",
-//   host: "",
-//   database: "",
-//   password: "",
+//   user: "postgres",
+//   host: "localhost",
+//   database: "world",
+//   password: "roop9854",
 //   port: 5432,
 // });
 // db.connect();
@@ -55,8 +55,6 @@ app.get("/", async (req, res) => {
 });
 app.post("/update", async (req, res) => {
   const input = req.body["country"];
-  console.log(req.body);
-
   try {
     const result = await db.query(
       "SELECT * FROM countries WHERE LOWER(country_name) LIKE '%' || $1 || '%';",
@@ -100,7 +98,11 @@ app.post("/update", async (req, res) => {
 });
 app.post("/user", async (req, res) => {
   if (req.body.add) {
-    res.render("new.ejs");
+    const users = await getUsers();
+    res.render("new.ejs", {
+      users: users,
+    });
+    console.log(users);
   } else {
     currentUserId = req.body.user;
     res.redirect("/");
@@ -115,6 +117,15 @@ app.post("/new", async (req, res) => {
   );
   currentUserId = data.rows[0].id;
   res.redirect("/");
+});
+app.post("/delete", async (req, res) => {
+  const userId = req.body.id;
+  try {
+    await db.query("DELETE FROM users WHERE id = $1;", [userId]);
+    res.redirect("/");
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 app.listen(port, () => {

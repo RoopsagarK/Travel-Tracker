@@ -9,14 +9,15 @@
   <link rel="stylesheet" href="./styles/new.css">
 </head>
 
-<body style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
-  <main>
-  <h1>Add a Family Member</h1>
-  <form action="/new" method="post">
+<body>
+  <div class="main" style="margin-left: 50%; transform: translateX(-50%);">
+    <form class="add" action="/new" method="post">
+    <h1>Add a Family Member</h1>
     <p>What's your name?</p>
     <input type="text" name="name">
 
     <p>Pick a color:</p>
+    <div>
     <input type="radio" name="color" id="red" value="#aa081a" />
     <label for="red"><span class="red"></span></label>
 
@@ -49,7 +50,16 @@
     <div class="spacer"></div>
     <button type="submit">Add</button>
   </form>
-  </main>
+  <% users.forEach(function(user) { %>
+    <form class="users" action="/delete" method="post">
+        <div class="name-list">
+          <%= user.name %>
+          <input type="hidden" name="id" value="<%= user.id %>">
+          <button type="submit" id="<%= user.id %>"> Delete </button>
+        </div>
+    </form>
+  <% }); %>
+</div>
 </body>
 
 </html>
