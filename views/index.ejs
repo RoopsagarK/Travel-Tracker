@@ -22,9 +22,10 @@
 
   </form>
 
-  <form action="/add" method="post">
-    <input type="text" name="country" autofocus placeholder="<%= locals.error ? error :  'Enter country name'%>">
-    <button type="submit" style="background-color: <%= color %>;">Add</button>
+  <form action="/update" method="post">
+    <input type="text" name="country"  autofocus placeholder="<%= locals.error ? error :  'Enter country name'%>">
+    <button type="submit" name="add" value=<% true %> id="add" style="background-color: <%= color %>;">Add</button>
+    <button type="submit" name="delete" value=<% true %> id="delete" style="background-color: <%= color %>;">Delete</button>
   </form>
 
   <section class="ag-canvas">

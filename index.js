@@ -1,23 +1,19 @@
+import "dotenv/config";
 import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
 
 const app = express();
 const port = 3000;
-
-const db = new pg.Client({
-  user: "###",
-  host: "###",
-  database: "###",
-  password: "###",
-  port: 0,
+const { Pool } = pg;
+const db = new Pool({
+  connectionString: process.env.POSTGRES_URL,
 });
-db.connect();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-let currentUserId = 1;
+let currentUserId = 0;
 
 async function getUsers() {
   const result = await db.query("SELECT * FROM users;");
@@ -49,8 +45,9 @@ app.get("/", async (req, res) => {
     color: response.color,
   });
 });
-app.post("/add", async (req, res) => {
+app.post("/update", async (req, res) => {
   const input = req.body["country"];
+  console.log(req.body);
 
   try {
     const result = await db.query(
@@ -65,14 +62,29 @@ app.post("/add", async (req, res) => {
     });
     const data = result.rows[findex];
     const countryCode = data.country_code;
-    try {
-      await db.query(
-        "INSERT INTO visited_countries (country_code, user_id) VALUES ($1, $2)",
-        [countryCode, currentUserId]
-      );
-      res.redirect("/");
-    } catch (err) {
-      console.log(err);
+    if (req.body.add) {
+      console.log("add statement");
+      try {
+        await db.query(
+          "INSERT INTO visited_countries (country_code, user_id) VALUES ($1, $2)",
+          [countryCode, currentUserId]
+        );
+        res.redirect("/");
+      } catch (err) {
+        console.log(err);
+      }
+    } else if (req.body.delete) {
+      console.log(req.body.delete);
+      console.log(countryCode, currentUserId);
+      try {
+        await db.query(
+          "DELETE FROM visited_countries WHERE country_code = $1 AND user_id = $2;",
+          [countryCode, currentUserId]
+        );
+        res.redirect("/");
+      } catch (err) {
+        console.log(err);
+      }
     }
   } catch (err) {
     console.log(err);
