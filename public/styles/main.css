@@ -448,7 +448,7 @@ button {
   }
 }
 
-@media screen and (min-width: 400px) {
+@media screen and (max-width: 413px) {
   .ag-canvas {
     margin-top: 50%;
     transform: translateY(-50%);
