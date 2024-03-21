@@ -6,6 +6,14 @@ import pg from "pg";
 const app = express();
 const port = process.env.PORT || 3000;
 const { Pool } = pg;
+// const db = new pg.Client({
+//   user: "",
+//   host: "",
+//   database: "",
+//   password: "",
+//   port: 5432,
+// });
+// db.connect();
 const db = new Pool({
   connectionString: process.env.POSTGRES_URL,
 });
